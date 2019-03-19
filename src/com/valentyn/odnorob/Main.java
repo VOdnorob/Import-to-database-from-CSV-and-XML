@@ -13,9 +13,17 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, IOException, SAXException, ParserConfigurationException {
 
+
+
+        File xmlFile = new File("dane-osoby.xml");
+
+        PersonXmlParser parser = new PersonXmlParser();
+
+        ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
+
+        System.out.println(person);
         JDBC jdbc = new JDBC();
         jdbc.connectionToDataBase();
-        jdbc.createTable();
 
     }
 

@@ -2,71 +2,61 @@ package com.valentyn.odnorob;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.FileNotFoundException;
+import java.sql.*;
 import java.util.ArrayList;
 
 class JDBC {
 
-    Connection db = null;
-
+    private Connection connection;
+    Statement statement;
     public void connectionToDataBase() {
-        Connection db = null;
         try {
-
-
             Class.forName("com.mysql.jdbc.Driver");
-
-            db = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila?useSSL=false", "root", "root");
-
-
         } catch (ClassNotFoundException e) {
-            System.out.println("Error creating class:" + e.getMessage());
-        } catch (SQLException e) {
+            System.out.println("Where is your MySQL JDBC Driver?");
             e.printStackTrace();
-        } finally {
-            try {
-                db.close();
-            } catch (SQLException e) {
-                System.out.println("Can`t close connection");
-            }
+            return;
         }
 
 
-    }
-
-    void createTable() throws SQLException {
-        StringBuffer buffer = new StringBuffer();
-        boolean proccesedFirst = false;
-        String firstParam = null, secondParam = null;
-
-
+        System.out.println("MySQL JDBC Driver Registered!");
+        Connection connection = null;
 
         try {
-            File xmlFile = new File("dane-osoby.xml");
+            connection = DriverManager
+                    .getConnection("jdbc:mysql://localhost:3306/sakila?useSSL=false", "root", "root");
 
-            PersonXmlParser parser = new PersonXmlParser();
+        } catch (SQLException e) {
+            System.out.println("Connection Failed! Check output console");
+            e.printStackTrace();
+            return;
+        }
 
-            ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
+        if (connection != null) {
+            System.out.println("You made it, take control your database now!");
+        } else {
+            System.out.println("Failed to make connection!");
+        }
 
-            System.out.println(person);
-                PreparedStatement create = db.prepareStatement("CREATE TABLE if not exists user " +
-                        "(id int  not null auto_increment," +
-                        "name varchar (100)," +
-                        "surname varchar (100), primary key (ID))" +
-                        "age int (50)" +
-                        "city varchar (100)");
-            create.executeUpdate();
-                PreparedStatement writeToTable = db.prepareStatement("INSERT INTO user (personParserHandler.getPersonList()) VALUES(?,?,?,?)");
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("CREATE TABLE CUSTOMERS (" +
+                    "ID int NOT NULL AUTO_INCREMENT primary key ," +
+                    "NAME varchar(255) NOT NULL," +
+                    "SURNAME varchar(255),\n" +
+                    "AGE int,\n" +
+                    "    CITY varchar (50))");
 
-        } catch (Exception e) {
-            System.out.println(e);
-        } finally {
+                PreparedStatement writeToTable = connection.prepareStatement("INSERT INTO user (personParserHandler.getPersonList()) VALUES(?,?,?,?)");
+                writeToTable.executeUpdate();
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }finally {
             System.out.println("Function Complete");
         }
 
-
     }
+
 }

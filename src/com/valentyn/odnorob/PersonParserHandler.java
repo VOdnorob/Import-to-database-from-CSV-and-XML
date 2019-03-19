@@ -11,12 +11,14 @@ import java.util.Stack;
 public class PersonParserHandler extends DefaultHandler {
 
     private ArrayList<Person> personList = new ArrayList<>();
+    private ArrayList<Contact> contactsList = new ArrayList<>();
 
     private Stack<String> elementStack = new Stack<>();
 
     private Stack<Person> objectStackPerson = new Stack<>();
 
-    private Stack<Contacts> objectStackContacts = new Stack<>();
+    private Stack<Contact> objectStackContacts = new Stack<>();
+
     public void startDocument() throws SAXException {
 
     }
@@ -31,9 +33,9 @@ public class PersonParserHandler extends DefaultHandler {
             Person person = new Person();
             this.objectStackPerson.push(person);
         }
-        if ("contacts".equalsIgnoreCase(qName)){
-            Contacts contacts =new Contacts();
-            this.objectStackContacts.push(qName); // здесь
+        if ("contact".equalsIgnoreCase(qName)){
+            Contact contact = new Contact();
+            this.objectStackContacts.push(contact);
         }
 
     }
@@ -43,6 +45,10 @@ public class PersonParserHandler extends DefaultHandler {
         {
             Person object = this.objectStackPerson.pop();
             this.personList.add(object);
+        }
+        if ("contact".equalsIgnoreCase(qName)){
+            Contact contact = this.objectStackContacts.pop();
+            this.objectStackContacts.add(contact);
         }
     }
 
@@ -66,7 +72,9 @@ public class PersonParserHandler extends DefaultHandler {
             person.setCity(value);
         }
 
+
     }
+
 
     private String currentElement(){
         return this.elementStack.peek();
@@ -74,5 +82,9 @@ public class PersonParserHandler extends DefaultHandler {
 
     public ArrayList<Person> getPersonList(){
         return personList;
+    }
+
+    public ArrayList<Contact> getContactsList(){
+        return contactsList;
     }
 }

@@ -9,7 +9,15 @@ public class Person {
     private Integer age;
     private String city;
 
-    ArrayList<Contacts> contacts = new ArrayList<>();
+    private ArrayList<Contact> contacts = new ArrayList<>();
+
+    public ArrayList<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
+    }
 
     public String getName() {
         return name;
@@ -50,6 +58,7 @@ public class Person {
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
                 ", city='" + city + '\'' +
+                ", contacts=" + contacts +
                 '}';
     }
 }

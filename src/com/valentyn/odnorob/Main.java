@@ -12,13 +12,11 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) throws SQLException, IOException, SAXException, ParserConfigurationException {
-        File xmlFile= new File("dane-osoby.xml");
 
-        PersonXmlParser parser = new PersonXmlParser();
+        JDBC jdbc = new JDBC();
+        jdbc.connectionToDataBase();
+        jdbc.createTable();
 
-        ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
-
-        System.out.println(person);
     }
 
 }

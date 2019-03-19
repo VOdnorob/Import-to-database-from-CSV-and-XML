@@ -1,9 +1,12 @@
 package com.valentyn.odnorob;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 class JDBC {
 
@@ -35,13 +38,28 @@ class JDBC {
     }
 
     void createTable() throws SQLException {
-        try {
+        StringBuffer buffer = new StringBuffer();
+        boolean proccesedFirst = false;
+        String firstParam = null, secondParam = null;
 
-            PreparedStatement create = db.prepareStatement("CREATE TABLE if not exists user " +
-                    "(id int  not null auto_increment," +
-                    "First_Name varchar (100)," +
-                    "Last_Name varchar (100), primary key (ID))");
+
+
+        try {
+            File xmlFile = new File("dane-osoby.xml");
+
+            PersonXmlParser parser = new PersonXmlParser();
+
+            ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
+
+            System.out.println(person);
+                PreparedStatement create = db.prepareStatement("CREATE TABLE if not exists user " +
+                        "(id int  not null auto_increment," +
+                        "name varchar (100)," +
+                        "surname varchar (100), primary key (ID))" +
+                        "age int (50)" +
+                        "city varchar (100)");
             create.executeUpdate();
+                PreparedStatement writeToTable = db.prepareStatement("INSERT INTO user (personParserHandler.getPersonList()) VALUES(?,?,?,?)");
 
         } catch (Exception e) {
             System.out.println(e);

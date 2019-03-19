@@ -1,14 +1,24 @@
 package com.valentyn.odnorob;
 
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException, SAXException, ParserConfigurationException {
+        File xmlFile= new File("dane-osoby.xml");
 
-        JDBC jdbc = new JDBC();
+        PersonXmlParser parser = new PersonXmlParser();
 
-        jdbc.createTable();
+        ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
+
+        System.out.println(person);
     }
 
 }

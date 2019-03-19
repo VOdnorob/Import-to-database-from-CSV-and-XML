@@ -1,42 +1,53 @@
 package com.valentyn.odnorob;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 class JDBC {
 
-    Connection connectionToDataBase() {
+    Connection db = null;
+
+    public void connectionToDataBase() {
+        Connection db = null;
         try {
+
 
             Class.forName("com.mysql.jdbc.Driver");
 
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila?useSSL=false", "root", "root" ) ;
+            db = DriverManager.getConnection("jdbc:mysql://localhost:3306/sakila?useSSL=false", "root", "root");
 
 
-
-            return connection;
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error creating class:" + e.getMessage());
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                db.close();
+            } catch (SQLException e) {
+                System.out.println("Can`t close connection");
+            }
         }
 
-        return null;
+
     }
 
-     void createTable() throws SQLException {
+    void createTable() throws SQLException {
         try {
 
-            Connection connection = connectionToDataBase();
-            PreparedStatement create = connection.prepareStatement("CREATE TABLE if not exists user " +
+            PreparedStatement create = db.prepareStatement("CREATE TABLE if not exists user " +
                     "(id int  not null auto_increment," +
                     "First_Name varchar (100)," +
                     "Last_Name varchar (100), primary key (ID))");
             create.executeUpdate();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
-        }finally {
+        } finally {
             System.out.println("Function Complete");
         }
-
 
 
     }

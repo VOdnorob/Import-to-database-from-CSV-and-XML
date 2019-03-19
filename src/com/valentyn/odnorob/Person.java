@@ -1,5 +1,7 @@
 package com.valentyn.odnorob;
 
+import java.util.ArrayList;
+
 public class Person {
 
     private String name;
@@ -7,6 +9,7 @@ public class Person {
     private Integer age;
     private String city;
 
+    ArrayList<Contacts> contacts = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -38,5 +41,15 @@ public class Person {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", city='" + city + '\'' +
+                '}';
     }
 }

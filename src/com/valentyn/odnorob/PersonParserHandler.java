@@ -14,8 +14,9 @@ public class PersonParserHandler extends DefaultHandler {
 
     private Stack<String> elementStack = new Stack<>();
 
-    private Stack<Person> objectStack = new Stack<>();
+    private Stack<Person> objectStackPerson = new Stack<>();
 
+    private Stack<Contacts> objectStackContacts = new Stack<>();
     public void startDocument() throws SAXException {
 
     }
@@ -28,15 +29,22 @@ public class PersonParserHandler extends DefaultHandler {
         this.elementStack.push(qName);
         if ("person".equalsIgnoreCase(qName)){
             Person person = new Person();
-            this.objectStack.push(person);
+            this.objectStackPerson.push(person);
         }
-
-
-
+        if ("contacts".equalsIgnoreCase(qName)){
+            Contacts contacts =new Contacts();
+            this.objectStackContacts.push(qName); // здесь
+        }
 
     }
 
-    public void endElement()
+    public void endElement(String uri, String localName, String qName) throws SAXException{
+        if ("person".equals(qName))
+        {
+            Person object = this.objectStackPerson.pop();
+            this.personList.add(object);
+        }
+    }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
         String value = new String(ch, start, length).trim();
@@ -45,19 +53,18 @@ public class PersonParserHandler extends DefaultHandler {
             return;
         }
         if ("name".equalsIgnoreCase(currentElement())) {
-            Person person = this.objectStack.peek();
+            Person person = this.objectStackPerson.peek();
             person.setName(value);
         } else if ("surname".equalsIgnoreCase(currentElement())) {
-            Person person = this.objectStack.peek();
+            Person person = this.objectStackPerson.peek();
             person.setSurname(value);
         } else if ("age".equalsIgnoreCase(currentElement())) {
-            Person person = this.objectStack.peek();
-            person.setSurname(value);
+            Person person = this.objectStackPerson.peek();
+            person.setAge(Integer.valueOf(value));
         } else if ("city".equalsIgnoreCase(currentElement())){
-            Person person = new Person();
+            Person person = this.objectStackPerson.peek();
             person.setCity(value);
         }
-
 
     }
 
@@ -65,7 +72,7 @@ public class PersonParserHandler extends DefaultHandler {
         return this.elementStack.peek();
     }
 
-    public ArrayList getPersonList(){
+    public ArrayList<Person> getPersonList(){
         return personList;
     }
 }

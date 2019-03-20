@@ -29,6 +29,7 @@ public class PersonParserHandler extends DefaultHandler {
         if ("person".equalsIgnoreCase(qName)) {
             Person person = new Person();
             this.objectStackPerson.push(person);
+            this.objectStackContacts.clear();
         }
 
         if ("contact".equalsIgnoreCase(qName)) {
@@ -43,7 +44,10 @@ public class PersonParserHandler extends DefaultHandler {
 
         if ("person".equals(qName)) {
             Person object = this.objectStackPerson.pop();
+            this.objectStackContacts.forEach(m -> object.getContact().add(m));
             this.personList.add(object);
+
+
         }
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = this.objectStackContacts.pop();
@@ -74,31 +78,23 @@ public class PersonParserHandler extends DefaultHandler {
             person.setCity(value);
         } else if ("phone".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
-            Person person = this.objectStackPerson.peek();
             contact.setType(2);
             contact.setValue(value);
-            person.getContact().add(contact);
 
         } else if ("email".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
-            Person person = this.objectStackPerson.peek();
             contact.setType(1);
             contact.setValue(value);
-            person.getContact().add(contact);
 
         } else if ("icq".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
             contact.setType(3);
             contact.setValue(value);
-            Person person = this.objectStackPerson.peek();
-            person.getContact().add(contact);
 
         } else if ("jabber".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
             contact.setType(4);
             contact.setValue(value);
-            Person person = this.objectStackPerson.peek();
-            person.getContact().add(contact);
         }
     }
 

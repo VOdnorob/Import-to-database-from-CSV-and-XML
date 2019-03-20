@@ -15,13 +15,12 @@ public class PersonXmlParser {
 
 
     static PersonParserHandler handler = new PersonParserHandler();
+
     public ArrayList parseXml(InputStream inputStream) throws SAXException, IOException {
 
         ArrayList<Person> personList = new ArrayList<>();
 
             XMLReader parser = XMLReaderFactory.createXMLReader();
-
-
 
             parser.setContentHandler(handler);
 

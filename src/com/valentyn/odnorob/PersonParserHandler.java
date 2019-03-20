@@ -29,7 +29,6 @@ public class PersonParserHandler extends DefaultHandler {
         if ("person".equalsIgnoreCase(qName)) {
             Person person = new Person();
             this.objectStackPerson.push(person);
-            this.objectStackContacts.clear();
         }
 
         if ("contact".equalsIgnoreCase(qName)) {
@@ -48,10 +47,13 @@ public class PersonParserHandler extends DefaultHandler {
             this.personList.add(object);
 
 
+
         }
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = this.objectStackContacts.pop();
+
             this.objectStackContacts.add(contact);
+            this.objectStackContacts.clear();
         }
 
     }

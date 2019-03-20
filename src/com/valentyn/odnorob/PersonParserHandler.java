@@ -23,26 +23,32 @@ public class PersonParserHandler extends DefaultHandler {
 
     }
 
-
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-
-        System.out.println(this.elementStack.push(qName) + " start");
+        this.elementStack.push(qName);
         if ("person".equalsIgnoreCase(qName)) {
             Person person = new Person();
             this.objectStackPerson.push(person);
         }
 
-        if ("contact".equalsIgnoreCase(qName)) {
+        if ("phone".equalsIgnoreCase(currentElement())) {
+            Contact contact = new Contact();
+            this.objectStackContacts.push(contact);
+        } else if ("email".equalsIgnoreCase(currentElement())) {
             Contact contact = new Contact();
             this.objectStackContacts.push(contact);
 
+        } else if ("icq".equalsIgnoreCase(currentElement())) {
+            Contact contact = new Contact();
+            this.objectStackContacts.push(contact);
+        } else if ("jabber".equalsIgnoreCase(currentElement())) {
+            Contact contact = new Contact();
+            this.objectStackContacts.push(contact);
         }
 
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
-        System.out.println(this.elementStack.push(qName) + " end");
         if ("person".equals(qName)) {
             Person object = this.objectStackPerson.pop();
             this.personList.add(object);
@@ -76,6 +82,7 @@ public class PersonParserHandler extends DefaultHandler {
         } else if ("city".equalsIgnoreCase(currentElement())) {
             Person person = this.objectStackPerson.peek();
             person.setCity(value);
+
         } else if ("phone".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
             contact.setType(2);

@@ -1,6 +1,6 @@
 package com.valentyn.odnorob;
 
-public class Contact{
+public class Contact {
 
     private Integer type;
     private String value;

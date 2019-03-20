@@ -1,6 +1,7 @@
 package com.valentyn.odnorob;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Person {
 
@@ -9,18 +10,15 @@ public class Person {
     private Integer age;
     private String city;
 
-    private ArrayList<Contact> contact = new ArrayList<>();
+    private List<Contact> contact = new ArrayList<>();
 
-    public ArrayList<Contact> getContact() {
+    public List<Contact> getContact() {
         return contact;
     }
 
     public void setContact(ArrayList<Contact> contact) {
         this.contact = contact;
     }
-
-
-
 
 
     public String getName() {

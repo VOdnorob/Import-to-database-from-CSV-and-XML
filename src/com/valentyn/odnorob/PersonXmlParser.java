@@ -1,7 +1,5 @@
 package com.valentyn.odnorob;
 
-import com.valentyn.odnorob.Person;
-import com.valentyn.odnorob.PersonParserHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -20,13 +18,13 @@ public class PersonXmlParser {
 
         ArrayList<Person> personList = new ArrayList<>();
 
-            XMLReader parser = XMLReaderFactory.createXMLReader();
+        XMLReader parser = XMLReaderFactory.createXMLReader();
 
-            parser.setContentHandler(handler);
+        parser.setContentHandler(handler);
 
-            InputSource source = new InputSource(inputStream);
+        InputSource source = new InputSource(inputStream);
 
-            parser.parse(source);
+        parser.parse(source);
 
         System.out.println(handler.getPersonList());
 

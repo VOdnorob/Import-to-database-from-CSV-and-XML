@@ -11,7 +11,6 @@ import java.util.Stack;
 public class PersonParserHandler extends DefaultHandler {
 
     private ArrayList<Person> personList = new ArrayList<>();
-    private ArrayList<Contact> contactsList = new ArrayList<>();
 
     private Stack<String> elementStack = new Stack<>();
 
@@ -19,42 +18,41 @@ public class PersonParserHandler extends DefaultHandler {
 
     private Stack<Contact> objectStackContacts = new Stack<>();
 
+
     public void startDocument() throws SAXException {
 
     }
 
-    public void endDocument() throws SAXException {
-
-    }
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
         this.elementStack.push(qName);
-        if ("person".equalsIgnoreCase(qName)){
+        if ("person".equalsIgnoreCase(qName)) {
             Person person = new Person();
             this.objectStackPerson.push(person);
         }
-        if ("contact".equalsIgnoreCase(qName)){
+        if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = new Contact();
             this.objectStackContacts.push(contact);
         }
 
     }
 
-    public void endElement(String uri, String localName, String qName) throws SAXException{
-        if ("person".equals(qName))
-        {
+    public void endElement(String uri, String localName, String qName) throws SAXException {
+
+
+        if ("person".equals(qName)) {
             Person object = this.objectStackPerson.pop();
             this.personList.add(object);
         }
-        if ("contact".equalsIgnoreCase(qName)){
+        if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = this.objectStackContacts.pop();
             this.objectStackContacts.add(contact);
         }
+
     }
 
     public void characters(char[] ch, int start, int length) throws SAXException {
         String value = new String(ch, start, length).trim();
-
         if (value.length() == 0) {
             return;
         }
@@ -67,33 +65,47 @@ public class PersonParserHandler extends DefaultHandler {
         } else if ("age".equalsIgnoreCase(currentElement())) {
             Person person = this.objectStackPerson.peek();
             person.setAge(Integer.valueOf(value));
-        } else if ("city".equalsIgnoreCase(currentElement())){
+        } else if ("city".equalsIgnoreCase(currentElement())) {
             Person person = this.objectStackPerson.peek();
             person.setCity(value);
-            if ("email".equalsIgnoreCase(currentElement())){
-                Contact contact = this.objectStackContacts.peek();
-                contact.setContact(value);
-            }else if ("phone".equalsIgnoreCase(currentElement())){
-                Contact contact = this.objectStackContacts.peek();
-                contact.setContact(value);
-            }
         }
 
+        if ("phone".equalsIgnoreCase(currentElement())) {
+            Contact contact = this.objectStackContacts.peek();
+            Person person = this.objectStackPerson.peek();
+            contact.setType(2);
+            contact.setValue(value);
+            person.getContact().add(contact);
 
+        } else if ("email".equalsIgnoreCase(currentElement())) {
+            Contact contact = this.objectStackContacts.peek();
+            Person person = this.objectStackPerson.peek();
+            contact.setType(1);
+            contact.setValue(value);
+            person.getContact().add(contact);
+
+        } else if ("icq".equalsIgnoreCase(currentElement())) {
+            Contact contact = this.objectStackContacts.peek();
+            contact.setType(3);
+            contact.setValue(value);
+            Person person = this.objectStackPerson.peek();
+            person.getContact().add(contact);
+
+        } else if ("jabber".equalsIgnoreCase(currentElement())) {
+            Contact contact = this.objectStackContacts.peek();
+            contact.setType(4);
+            contact.setValue(value);
+            Person person = this.objectStackPerson.peek();
+            person.getContact().add(contact);
+        }
     }
 
-
-    private String currentElement(){
+    private String currentElement() {
         return this.elementStack.peek();
     }
 
-    public ArrayList<Person> getPersonList(){
+    public ArrayList<Person> getPersonList() {
         return personList;
     }
-
-    public ArrayList<Contact> getContactsList(){
-        return contactsList;
-    }
-
 
 }

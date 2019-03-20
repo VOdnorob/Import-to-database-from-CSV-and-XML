@@ -2,11 +2,10 @@ package com.valentyn.odnorob;
 
 import java.util.ArrayList;
 
-public class Contact {
+public class Contact{
 
     private Integer type;
-    private String contact;
-
+    private String value;
 
     public Integer getType() {
         return type;
@@ -16,15 +15,19 @@ public class Contact {
         this.type = type;
     }
 
-    public String getContact() {
-        return contact;
+    public String getValue() {
+        return value;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setValue(String value) {
+        this.value = value;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "type=" + type +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

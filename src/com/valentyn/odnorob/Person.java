@@ -9,15 +9,19 @@ public class Person {
     private Integer age;
     private String city;
 
-    private ArrayList<Contact> contacts = new ArrayList<>();
+    private ArrayList<Contact> contact = new ArrayList<>();
 
-    public ArrayList<Contact> getContacts() {
-        return contacts;
+    public ArrayList<Contact> getContact() {
+        return contact;
     }
 
-    public void setContacts(ArrayList<Contact> contacts) {
-        this.contacts = contacts;
+    public void setContact(ArrayList<Contact> contact) {
+        this.contact = contact;
     }
+
+
+
+
 
     public String getName() {
         return name;
@@ -58,7 +62,7 @@ public class Person {
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
                 ", city='" + city + '\'' +
-                ", contacts=" + contacts +
+                ", contacts=" + contact +
                 '}';
     }
 }

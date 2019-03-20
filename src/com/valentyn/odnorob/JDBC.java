@@ -2,24 +2,17 @@ package com.valentyn.odnorob;
 
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
 
-class JDBC {
+/*
+public class JDBC {
 
-    private Connection connection;
-    Statement statement;
 
-    public void connectionToDataBase() throws IOException, SAXException {
-        File xmlFile = new File("dane-osoby.xml");
+    private static Connection connection;
+    private static Statement statement;
 
-        PersonXmlParser parser = new PersonXmlParser();
-
-        ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
-
+    public void connectionToDataBase() throws IOException, SAXException, SQLException {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -37,41 +30,48 @@ class JDBC {
             connection = DriverManager
                     .getConnection("jdbc:mysql://localhost:3306/sakila?useSSL=false", "root", "root");
 
-        } catch (SQLException e) {
-            System.out.println("Connection Failed! Check output console");
-            e.printStackTrace();
-            return;
-        }
+            if (connection != null) {
+                System.out.println("You made it, take control your database now!");
 
-        if (connection != null) {
-            System.out.println("You made it, take control your database now!");
-        } else {
-            System.out.println("Failed to make connection!");
-        }
+                try {
+                    statement = connection.createStatement();
+                    statement.executeUpdate("CREATE TABLE CUSTOMERS (" +
+                            "ID int NOT NULL AUTO_INCREMENT primary key ," +
+                            "NAME varchar(255) NOT NULL," +
+                            "SURNAME varchar(255),\n" +
+                            "AGE int (10) null,\n" +
+                            "CITY varchar (50))");
+                    PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO CUSTOMERS (NAME, SURNAME, AGE, CITY) VALUES(? , ?, ? , ?)");
+                    for (int i = 0; i < PersonXmlParser.handler.getPersonList().size(); i++) {
+                        preparedStatement.setString(1, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getName()));
+                        preparedStatement.setString(2, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getSurname()));
+                        if (PersonXmlParser.handler.getPersonList().get(i).getAge() == null) {
+                            preparedStatement.setNull(3, Types.INTEGER);
+                        } else {
+                            preparedStatement.setInt(3, PersonXmlParser.handler.getPersonList().get(i).getAge());
+                        }
+                        preparedStatement.setString(4, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getCity()));
+                        preparedStatement.executeUpdate();
+                    }
 
-        try {
-            statement = connection.createStatement();
-            /*statement.executeUpdate("CREATE TABLE CUSTOMERS (" +
-                    "ID int NOT NULL AUTO_INCREMENT primary key ," +
-                    "NAME varchar(255) NOT NULL," +
-                    "SURNAME varchar(255),\n" +
-                    "AGE int,\n" +
-                    "    CITY varchar (50))");
-*/
 
-
-            PreparedStatement writeToTable = connection.prepareStatement("INSERT INTO CUSTOMERS (NAME, SURNAME, AGE, CITY) VALUES('?', '?', '?' , '?')");
-            for (int i = 0; i < PersonXmlParser.handler.getPersonList().size(); i ++){
-
+                    System.out.println("tut");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    System.out.println("Function Complete");
+                }
+            } else {
+                System.out.println("Failed to make connection!");
             }
-         //   writeToTable.executeUpdate();
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
         } finally {
-            System.out.println("Function Complete");
+            System.out.println("ok");
         }
 
     }
 
+
 }
+*/

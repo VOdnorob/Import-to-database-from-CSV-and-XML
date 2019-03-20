@@ -7,18 +7,27 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws SQLException, IOException, SAXException, ParserConfigurationException {
 
+        File xmlFile = new File("dane-osoby.xml");
 
+        PersonXmlParser parser = new PersonXmlParser();
 
+        parser.parseXml(new FileInputStream(xmlFile));
+/*
 
-        //System.out.println(person);
         JDBC jdbc = new JDBC();
         jdbc.connectionToDataBase();
+*/
+
+
+
+
+
+
 
     }
 

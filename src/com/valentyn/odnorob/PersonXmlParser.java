@@ -12,15 +12,15 @@ import java.util.ArrayList;
 
 public class PersonXmlParser {
 
-    public ArrayList parseXml(InputStream inputStream){
+   static PersonParserHandler handler = new PersonParserHandler();
+    public ArrayList parseXml(InputStream inputStream) throws SAXException, IOException {
 
         ArrayList<Person> personList = new ArrayList<Person>();
-        ArrayList<Contact> contactList = new ArrayList<Contact>();
-        ArrayList<ArrayList> contactsAndPerson = new ArrayList<ArrayList>();
-        try {
-            PersonParserHandler handler = new PersonParserHandler();
 
             XMLReader parser = XMLReaderFactory.createXMLReader();
+
+            PersonParserHandler handler = new PersonParserHandler();
+
 
             parser.setContentHandler(handler);
 
@@ -28,11 +28,8 @@ public class PersonXmlParser {
 
             parser.parse(source);
 
-            contactsAndPerson.add(personList = handler.getPersonList());
-            contactsAndPerson.add(contactList = handler.getContactsList());
-        }catch (SAXException | IOException ex){
-            ex.printStackTrace();
-        }
-        return contactsAndPerson;
+        System.out.println(handler.getPersonList());
+
+        return personList;
     }
 }

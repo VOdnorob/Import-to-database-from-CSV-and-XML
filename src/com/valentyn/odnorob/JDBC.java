@@ -1,8 +1,10 @@
 package com.valentyn.odnorob;
 
+import org.xml.sax.SAXException;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -10,7 +12,15 @@ class JDBC {
 
     private Connection connection;
     Statement statement;
-    public void connectionToDataBase() {
+
+    public void connectionToDataBase() throws IOException, SAXException {
+        File xmlFile = new File("dane-osoby.xml");
+
+        PersonXmlParser parser = new PersonXmlParser();
+
+        ArrayList person = parser.parseXml(new FileInputStream(xmlFile));
+
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -41,19 +51,24 @@ class JDBC {
 
         try {
             statement = connection.createStatement();
-            statement.executeUpdate("CREATE TABLE CUSTOMERS (" +
+            /*statement.executeUpdate("CREATE TABLE CUSTOMERS (" +
                     "ID int NOT NULL AUTO_INCREMENT primary key ," +
                     "NAME varchar(255) NOT NULL," +
                     "SURNAME varchar(255),\n" +
                     "AGE int,\n" +
                     "    CITY varchar (50))");
+*/
 
-                PreparedStatement writeToTable = connection.prepareStatement("INSERT INTO user (personParserHandler.getPersonList()) VALUES(?,?,?,?)");
-                writeToTable.executeUpdate();
 
-        }catch (Exception ex){
+            PreparedStatement writeToTable = connection.prepareStatement("INSERT INTO CUSTOMERS (NAME, SURNAME, AGE, CITY) VALUES('?', '?', '?' , '?')");
+            for (int i = 0; i < PersonXmlParser.handler.getPersonList().size(); i ++){
+
+            }
+         //   writeToTable.executeUpdate();
+
+        } catch (Exception ex) {
             ex.printStackTrace();
-        }finally {
+        } finally {
             System.out.println("Function Complete");
         }
 

@@ -70,6 +70,13 @@ public class PersonParserHandler extends DefaultHandler {
         } else if ("city".equalsIgnoreCase(currentElement())){
             Person person = this.objectStackPerson.peek();
             person.setCity(value);
+            if ("email".equalsIgnoreCase(currentElement())){
+                Contact contact = this.objectStackContacts.peek();
+                contact.setContact(value);
+            }else if ("phone".equalsIgnoreCase(currentElement())){
+                Contact contact = this.objectStackContacts.peek();
+                contact.setContact(value);
+            }
         }
 
 
@@ -87,4 +94,6 @@ public class PersonParserHandler extends DefaultHandler {
     public ArrayList<Contact> getContactsList(){
         return contactsList;
     }
+
+
 }

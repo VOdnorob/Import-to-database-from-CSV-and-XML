@@ -7,6 +7,7 @@ public class Contact {
     private Integer type;
     private String contact;
 
+
     public Integer getType() {
         return type;
     }

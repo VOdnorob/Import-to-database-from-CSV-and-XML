@@ -1,7 +1,5 @@
 package com.valentyn.odnorob;
 
-import java.util.ArrayList;
-
 public class Contact{
 
     private Integer type;

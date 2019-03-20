@@ -17,11 +17,9 @@ public class Main {
         PersonXmlParser parser = new PersonXmlParser();
 
         parser.parseXml(new FileInputStream(xmlFile));
-/*
 
         JDBC jdbc = new JDBC();
         jdbc.connectionToDataBase();
-*/
 
 
 

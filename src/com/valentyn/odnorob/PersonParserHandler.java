@@ -30,6 +30,7 @@ public class PersonParserHandler extends DefaultHandler {
             Person person = new Person();
             this.objectStackPerson.push(person);
         }
+
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = new Contact();
             this.objectStackContacts.push(contact);
@@ -53,9 +54,12 @@ public class PersonParserHandler extends DefaultHandler {
 
     public void characters(char[] ch, int start, int length) throws SAXException {
         String value = new String(ch, start, length).trim();
+
         if (value.length() == 0) {
             return;
         }
+
+
         if ("name".equalsIgnoreCase(currentElement())) {
             Person person = this.objectStackPerson.peek();
             person.setName(value);
@@ -68,9 +72,7 @@ public class PersonParserHandler extends DefaultHandler {
         } else if ("city".equalsIgnoreCase(currentElement())) {
             Person person = this.objectStackPerson.peek();
             person.setCity(value);
-        }
-
-        if ("phone".equalsIgnoreCase(currentElement())) {
+        } else if ("phone".equalsIgnoreCase(currentElement())) {
             Contact contact = this.objectStackContacts.peek();
             Person person = this.objectStackPerson.peek();
             contact.setType(2);

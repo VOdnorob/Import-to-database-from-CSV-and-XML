@@ -5,7 +5,6 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.sql.*;
 
-/*
 public class JDBC {
 
 
@@ -41,17 +40,32 @@ public class JDBC {
                             "SURNAME varchar(255),\n" +
                             "AGE int (10) null,\n" +
                             "CITY varchar (50))");
-                    PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO CUSTOMERS (NAME, SURNAME, AGE, CITY) VALUES(? , ?, ? , ?)");
+                    statement.executeUpdate("create table CONTACTS(" +
+                            "ID int NOT NULL AUTO_INCREMENT primary key ," +
+                            "CUSTOMER_ID int not null default 0, " +
+                            "foreign key (customer_id) references customers(ID)," +
+                            "TYPE varchar (100)," +
+                            "CONTACT varchar (150))");
+                    PreparedStatement statementForAddUser = connection.prepareStatement("INSERT INTO CUSTOMERS (NAME, SURNAME, AGE, CITY) VALUES(? , ?, ? , ?)");
                     for (int i = 0; i < PersonXmlParser.handler.getPersonList().size(); i++) {
-                        preparedStatement.setString(1, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getName()));
-                        preparedStatement.setString(2, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getSurname()));
+                        statementForAddUser.setString(1, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getName()));
+                        statementForAddUser.setString(2, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getSurname()));
                         if (PersonXmlParser.handler.getPersonList().get(i).getAge() == null) {
-                            preparedStatement.setNull(3, Types.INTEGER);
+                            statementForAddUser.setNull(3, Types.INTEGER);
                         } else {
-                            preparedStatement.setInt(3, PersonXmlParser.handler.getPersonList().get(i).getAge());
+                            statementForAddUser.setInt(3, PersonXmlParser.handler.getPersonList().get(i).getAge());
                         }
-                        preparedStatement.setString(4, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getCity()));
-                        preparedStatement.executeUpdate();
+                        statementForAddUser.setString(4, String.valueOf(PersonXmlParser.handler.getPersonList().get(i).getCity()));
+                        statementForAddUser.executeUpdate();
+                    }
+
+                    PreparedStatement statementForAddContactsPerson = connection.prepareStatement("INSERT INTO CONTACTS (TYPE, CONTACT) VALUES (?,?)");
+                    for (int countForPerson = 0; countForPerson < PersonXmlParser.handler.getPersonList().size(); countForPerson++){
+                        for (int countForContact = 0; countForContact <PersonXmlParser.handler.getPersonList().get(countForContact).getContact().size(); countForContact++){
+                            statementForAddContactsPerson.setString(1, String.valueOf(PersonXmlParser.handler.getPersonList().get(countForPerson).getContact().get(0)));
+                            statementForAddContactsPerson.setString(2, String.valueOf(PersonXmlParser.handler.getPersonList().get(countForPerson).getContact().get(0)));
+                            statementForAddContactsPerson.executeUpdate();
+                        }
                     }
 
 
@@ -74,4 +88,3 @@ public class JDBC {
 
 
 }
-*/

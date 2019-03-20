@@ -25,7 +25,8 @@ public class PersonParserHandler extends DefaultHandler {
 
 
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        this.elementStack.push(qName);
+
+        System.out.println(this.elementStack.push(qName) + " start");
         if ("person".equalsIgnoreCase(qName)) {
             Person person = new Person();
             this.objectStackPerson.push(person);
@@ -34,22 +35,23 @@ public class PersonParserHandler extends DefaultHandler {
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = new Contact();
             this.objectStackContacts.push(contact);
+
         }
 
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
 
-
+        System.out.println(this.elementStack.push(qName) + " end");
         if ("person".equals(qName)) {
             Person object = this.objectStackPerson.pop();
             this.personList.add(object);
-            this.objectStackContacts.clear();
         }
 
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = this.objectStackContacts.pop();
-            this.objectStackPerson.peek().getContact().add(contact);
+            Person peek = this.objectStackPerson.peek();
+            this.objectStackContacts.forEach(m -> peek.getContact().add(m));
         }
 
     }

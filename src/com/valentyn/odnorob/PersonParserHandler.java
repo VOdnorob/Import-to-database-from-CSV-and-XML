@@ -43,17 +43,16 @@ public class PersonParserHandler extends DefaultHandler {
 
         if ("person".equals(qName)) {
             Person object = this.objectStackPerson.pop();
-            this.objectStackContacts.forEach(m -> object.getContact().add(m));
             this.personList.add(object);
             this.objectStackContacts.clear();
 
 
-
         }
+
         if ("contact".equalsIgnoreCase(qName)) {
             Contact contact = this.objectStackContacts.pop();
-            this.objectStackContacts.add(contact);
-
+            Person peek = this.objectStackPerson.peek();
+            this.objectStackPerson.add(peek);
         }
 
     }
